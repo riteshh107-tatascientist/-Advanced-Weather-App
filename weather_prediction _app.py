@@ -4,6 +4,7 @@ import pandas as pd
 import datetime
 import time
 import requests
+import os
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
@@ -55,8 +56,11 @@ city = st.sidebar.text_input("🔍 Enter City or State Name", value="Bhopal")
 refresh = st.sidebar.button("🔄 Refresh Weather")
 
 # ---------------- MUSIC ----------------
-# Use Streamlit audio without Pillow
-st.audio("pawan_singh.mp3", format="audio/mp3", start_time=0)
+music_file = "pawan_singh.mp3"
+if os.path.exists(music_file):
+    st.audio(music_file, format="audio/mp3", start_time=0)
+else:
+    st.warning("🎵 Background music file missing.")
 
 # ---------------- MAIN CONTENT ----------------
 st.markdown('<div class="glass-card">', unsafe_allow_html=True)
@@ -75,7 +79,7 @@ st.divider()
 def get_real_weather(city_name):
     url = f"https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_KEY}&units=metric"
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=5)
         if response.status_code == 200:
             data = response.json()
             return data["main"]["temp"], data["main"]["humidity"], data["wind"]["speed"]
