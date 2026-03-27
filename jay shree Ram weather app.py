@@ -4,7 +4,6 @@ import pandas as pd
 import datetime
 import time
 import requests
-import base64
 import os
 
 # ---------------- PAGE CONFIG ----------------
@@ -56,21 +55,12 @@ st.sidebar.markdown("## ⚙️ Settings")
 city = st.sidebar.text_input("🔍 Enter City or State Name", value="Bhopal")
 refresh = st.sidebar.button("🔄 Refresh Weather")
 
-# ---------------- MUSIC FUNCTION (Visible) ----------------
-def play_music(file_path):
-    """Plays background music with visible controls."""
-    if os.path.exists(file_path):
-        with open(file_path, "rb") as f:
-            data = f.read()
-            b64 = base64.b64encode(data).decode()
-            st.markdown(f"""
-            <audio src="data:audio/mp3;base64,{b64}" controls autoplay loop></audio>
-            """, unsafe_allow_html=True)
-    else:
-        st.warning("🎵 Music file not found. Place 'pawan_singh.mp3' in the project folder.")
-
-# 🎵 Run visible music
-play_music("pawan_singh.mp3")
+# ---------------- MUSIC ----------------
+music_file = "pawan_singh.mp3"
+if os.path.exists(music_file):
+    st.audio(music_file, format='audio/mp3', start_time=0)
+else:
+    st.warning("🎵 Music file not found. Add 'pawan_singh.mp3' in project folder.")
 
 # ---------------- MAIN CONTENT ----------------
 st.markdown('<div class="glass-card">', unsafe_allow_html=True)
@@ -114,7 +104,7 @@ if temperature is not None:
     elif temperature > 25: st.warning("☀ Status: Warm Weather")
     else: st.success("❄ Status: Cool Weather")
 else:
-    st.error(f"❌ Could not find weather for '{city}'. Please check the spelling.")
+    st.error(f"❌ Could not find weather for '{city}'. Please check spelling.")
 
 # Graph Section
 st.markdown("---")
@@ -125,7 +115,7 @@ temps = [base_temp + random.randint(-5, 5) for _ in range(7)]
 data = pd.DataFrame({"Date": dates[::-1], "Temp (°C)": temps[::-1]})
 st.line_chart(data.set_index("Date"))
 
-# ---------------- FOOTER SECTIONS ----------------
+# ---------------- FOOTER ----------------
 st.markdown("---")
 col_math, col_ds = st.columns(2)
 
@@ -139,7 +129,7 @@ with col_ds:
     st.markdown("### 📊 Data Science Skills")
     st.write("🔹 **API Integration:** RESTful requests.")
     st.write("🔹 **Data Wrangling:** Pandas DataFrame cleaning.")
-    st.write("🔹 **Visualization:** Real-time Plotly/Streamlit charts.")
+    st.write("🔹 **Visualization:** Real-time Streamlit charts.")
 
 st.markdown("---")
 f_col1, f_col2 = st.columns([2, 1])
@@ -157,5 +147,5 @@ with f_col2:
     st.write("🎓 **B.Tech CSE (Data Science)**")
 
 st.markdown("---")
-st.info("📌 This app uses the OpenWeatherMap API to fetch real-time meteorological data.")
+st.info("📌 This app uses OpenWeatherMap API to fetch real-time meteorological data.")
 st.markdown('</div>', unsafe_allow_html=True)
