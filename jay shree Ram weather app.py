@@ -14,7 +14,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------- UI STYLING (House Predictor Premium Style) ----------------
+# ---------------- UI STYLING ----------------
 st.markdown("""
     <style>
     .stApp {
@@ -56,32 +56,21 @@ st.sidebar.markdown("## ⚙️ Settings")
 city = st.sidebar.text_input("🔍 Enter City or State Name", value="Bhopal")
 refresh = st.sidebar.button("🔄 Refresh Weather")
 
-# ---------------- MUSIC FUNCTION (Corner, Hidden, Deployment Friendly) ----------------
-def corner_music(file_path):
-    """Plays hidden looping background music safely."""
+# ---------------- MUSIC FUNCTION (Visible) ----------------
+def play_music(file_path):
+    """Plays background music with visible controls."""
     if os.path.exists(file_path):
         with open(file_path, "rb") as f:
             data = f.read()
             b64 = base64.b64encode(data).decode()
             st.markdown(f"""
-            <audio id="bg-music" src="data:audio/mp3;base64,{b64}" autoplay loop controls></audio>
-            <style>
-                #bg-music {{
-                    position: fixed;
-                    bottom: 10px;
-                    left: 10px;
-                    width: 50px !important;
-                    height: 30px !important;
-                    opacity: 0.2;  /* almost hidden */
-                    z-index: 9999;
-                }}
-            </style>
+            <audio src="data:audio/mp3;base64,{b64}" controls autoplay loop></audio>
             """, unsafe_allow_html=True)
     else:
-        st.warning("🎵 Background music file not found. Place 'pawan_singh.mp3' in the project folder.")
+        st.warning("🎵 Music file not found. Place 'pawan_singh.mp3' in the project folder.")
 
-# 🎵 Run hidden corner music (relative path)
-corner_music("pawan_singh.mp3")
+# 🎵 Run visible music
+play_music("pawan_singh.mp3")
 
 # ---------------- MAIN CONTENT ----------------
 st.markdown('<div class="glass-card">', unsafe_allow_html=True)
