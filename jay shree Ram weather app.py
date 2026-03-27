@@ -4,23 +4,12 @@ import pandas as pd
 import datetime
 import time
 import requests
-
 import base64
+import os
 
-# ---------------- MUSIC FUNCTION ----------------
-def autoplay_music(file_path):
-    with open(file_path, "rb") as f:
-        data = f.read()
-        b64 = base64.b64encode(data).decode()
-        md = f"""
-        <audio controls autoplay loop>
-        <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-        </audio>
-        """
-        st.markdown(md, unsafe_allow_html=True)
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
-    page_title="Advanced Weather App 🚩 Jay Mahakal 🚩",
+    page_title="Advanced Weather App 🌐 Global Weather Hub 🌎",
     page_icon="🌤 🚩",
     layout="wide"
 )
@@ -67,28 +56,33 @@ st.sidebar.markdown("## ⚙️ Settings")
 city = st.sidebar.text_input("🔍 Enter City or State Name", value="Bhopal")
 refresh = st.sidebar.button("🔄 Refresh Weather")
 
-# ---------------- MUSIC (Hidden Corner) ----------------
+# ---------------- MUSIC FUNCTION (Corner, Hidden, Deployment Friendly) ----------------
 def corner_music(file_path):
-    with open(file_path, "rb") as f:
-        data = f.read()
-        b64 = base64.b64encode(data).decode()
-        st.markdown(f"""
-        <audio id="bg-music" src="data:audio/mp3;base64,{b64}" autoplay loop controls></audio>
-        <style>
-            #bg-music {{
-                position: fixed;
-                bottom: 10px;
-                right: 10px;
-                width: 50px !important;
-                height: 30px !important;
-                opacity: 0.2;  /* almost hidden */
-                z-index: 9999;
-            }}
-        </style>
-        """, unsafe_allow_html=True)
+    """Plays hidden looping background music safely."""
+    if os.path.exists(file_path):
+        with open(file_path, "rb") as f:
+            data = f.read()
+            b64 = base64.b64encode(data).decode()
+            st.markdown(f"""
+            <audio id="bg-music" src="data:audio/mp3;base64,{b64}" autoplay loop controls></audio>
+            <style>
+                #bg-music {{
+                    position: fixed;
+                    bottom: 10px;
+                    right: 10px;
+                    width: 50px !important;
+                    height: 30px !important;
+                    opacity: 0.2;  /* almost hidden */
+                    z-index: 9999;
+                }}
+            </style>
+            """, unsafe_allow_html=True)
+    else:
+        st.warning("🎵 Background music file not found. Place 'pawan_singh.mp3' in the project folder.")
 
-# 🎵 Run hidden corner music
-corner_music(r"D:\weather_project\pawan_singh.mp3")
+# 🎵 Run hidden corner music (relative path)
+corner_music("pawan_singh.mp3")
+
 # ---------------- MAIN CONTENT ----------------
 st.markdown('<div class="glass-card">', unsafe_allow_html=True)
 
@@ -98,7 +92,7 @@ with col_title:
     st.title("🌦 Advanced Weather App")
     st.subheader(f"📍 Location: {city.upper()}")
 with col_motto:
-    st.markdown('<div class="motto-text">🚩 Jay Mahakal 🚩</div>', unsafe_allow_html=True)
+    st.markdown('<div class="motto-text">🌐 Global Weather Hub 🌎</div>', unsafe_allow_html=True)
 
 st.divider()
 
@@ -142,7 +136,7 @@ temps = [base_temp + random.randint(-5, 5) for _ in range(7)]
 data = pd.DataFrame({"Date": dates[::-1], "Temp (°C)": temps[::-1]})
 st.line_chart(data.set_index("Date"))
 
-# ---------------- FOOTER SECTIONS (GRAPH KE NICHE) ----------------
+# ---------------- FOOTER SECTIONS ----------------
 st.markdown("---")
 col_math, col_ds = st.columns(2)
 
