@@ -69,7 +69,7 @@ def corner_music(file_path):
                 #bg-music {{
                     position: fixed;
                     bottom: 10px;
-                    right: 10px;
+                    left: 10px;
                     width: 50px !important;
                     height: 30px !important;
                     opacity: 0.2;  /* almost hidden */
